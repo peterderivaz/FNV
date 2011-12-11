@@ -1,0 +1,22 @@
+FNV Collision finder.
+
+This is a simple Python program designed to try and solve some of the challenges on the page http://isthe.com/chongo/tech/comp/fnv/.
+
+The challenges involve finding the shortest sequence of bytes in some range that hash to 0 using one of the FNV hashes.
+
+The program includes the line:
+  fnv_collision(32,mode=0,numsections=1)
+  
+This tells it to search for a hash collision using the 32bit FNV hash using 1 section.
+Setting alt=True will search using the FNVa hash.
+Setting the mode to 0,1,2,3 will switch to using different (increasingly restrictive) ranges of allowed characters.
+Searches can be split into sections to reduce memory use at the expense of increasing computational load.
+
+The algorithm is to use meet in the middle, plus the trick that we know we can use the middle encoded byte to correct any mismatch in the lowest byte of the hash when we attempt to meet.
+In practice this means that we use keys consisting of the top (N-8) bits of the hash.
+
+32bit collisions are found in a few seconds.
+64bit collisions can take a few hours.
+128 and higher are not supported as they are unlikely to ever finish.
+
+If all solutions are desired of a certain length, then either use 1 section or remove the line "if not go: break"
